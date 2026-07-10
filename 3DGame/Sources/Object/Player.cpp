@@ -23,6 +23,10 @@ void Player::Update(float deltaTime)
     {
         Jump();
     }
+    if (Input::GetKeyDown(VK_RBUTTON))
+    {
+        ShootHook();
+    }
 }
 
 void Player::Render(
@@ -65,7 +69,13 @@ Vector3 Player::GetNextPosition(float deltaTime) const
     {
         move.Normalize();
     }
-    return m_position + move * m_moveSpeed * deltaTime;
+
+    Vector3 next = GetPosition();
+
+    next += move * m_moveSpeed * deltaTime;
+    next += GetRigidBody().GetVelocity() * deltaTime;
+
+    return next;
 }
 
 void Player::MoveTo(const Vector3& position)
@@ -90,4 +100,9 @@ void Player::Jump()
 
     body.SetVelocity(velocity);
     body.SetGround(false);
+}
+
+void Player::ShootHook()
+{
+    m_hookGun.StartShoot();
 }

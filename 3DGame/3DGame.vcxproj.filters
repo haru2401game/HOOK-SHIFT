@@ -23,6 +23,9 @@
     <Filter Include="Sources\Physics">
       <UniqueIdentifier>{08adfe0c-188f-4b4b-963e-3c195067784f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Item">
+      <UniqueIdentifier>{e2da9c4f-abff-49c4-946d-ea4eaba64d1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -81,6 +84,9 @@
     <ClInclude Include="Sources\Component\RigidBody.h">
       <Filter>Sources\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Item\HookGun.h">
+      <Filter>Sources\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -133,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Component\RigidBody.cpp">
       <Filter>Sources\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Item\HookGun.cpp">
+      <Filter>Sources\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

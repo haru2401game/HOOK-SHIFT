@@ -1,6 +1,7 @@
 #include <GeometricPrimitive.h>
 #include <CommonStates.h>
 #include "GameObject.h"
+#include "Sources/Item/HookGun.h"
 
 class Player : public GameObject
 {
@@ -27,6 +28,20 @@ public:
 
     float GetYaw() const { return m_yaw; }
 
+    // ----- フックガン関連 ----- //
+
+    void ShootHook();
+
+    HookGun& GetHookGun()
+    {
+        return m_hookGun;
+    }
+
+    const HookGun& GetHookGun() const
+    {
+        return m_hookGun;
+    }
+
 private:
 
     void UpdateRotation(float deltaTime);
@@ -40,4 +55,6 @@ private:
     float m_yaw = 0.0f;
 
     float m_moveSpeed = 5.0f;
+
+    HookGun m_hookGun;
 };

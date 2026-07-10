@@ -26,3 +26,43 @@ bool ColliderManager::CheckCollision(
     }
     return false;
 }
+
+bool ColliderManager::Raycast(
+    const Vector3& origin,
+    const Vector3& direction,
+    float maxDistance,
+    const GameObject* owner,
+    const Collider*& hitCollider,
+    Vector3& hitPoint) const
+{
+    float nearest = maxDistance;
+    hitCollider = nullptr;
+
+    for (auto collider : m_colliders)
+    {
+        if (!collider->GetOwner())
+            continue;
+
+        if (collider->GetOwner() == owner)
+            continue;
+
+        float distance;
+
+        if (collider->Raycast(origin, direction, maxDistance, distance))
+        {
+            if (distance < nearest)
+            {
+                nearest = distance;
+                hitCollider = collider;
+            }
+        }
+    }
+
+    if (hitCollider)
+    {
+        hitPoint = origin + direction * nearest;
+        return true;
+    }
+
+    return false;
+}

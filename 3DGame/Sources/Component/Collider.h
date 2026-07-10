@@ -21,6 +21,12 @@ public:
 
     GameObject* GetOwner() const { return m_owner; };
 
+    bool Raycast(
+        const DirectX::SimpleMath::Vector3& origin,
+        const DirectX::SimpleMath::Vector3& direction,
+        float maxDistance,
+        float& hitDistance) const;
+
 private:
     DirectX::SimpleMath::Vector3 m_center = {};
     DirectX::SimpleMath::Vector3 m_size = { 1.0f,1.0f,1.0f };
