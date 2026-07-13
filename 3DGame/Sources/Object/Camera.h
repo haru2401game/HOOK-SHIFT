@@ -22,8 +22,6 @@ private:
 
     DirectX::SimpleMath::Vector3 m_position = {};
 
-    float m_pitch = 0.0f;
-
     float m_aspectRatio = 16.0f / 9.0f;
 
 

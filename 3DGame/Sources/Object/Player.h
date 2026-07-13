@@ -23,14 +23,19 @@ public:
 
     void Jump();
 
-    void Land(
-        float groundY);
-
     float GetYaw() const { return m_yaw; }
+    float GetPitch() const{ return m_pitch; }
+    Vector3 GetForward() const;
+    Vector3 GetRight() const;
+    Vector3 GetUp() const;
+    Vector3 GetEyePosition() const;
+
+    Vector3 GetHookPoint() const;
 
     // ----- フックガン関連 ----- //
 
     void ShootHook();
+    void ReleaseHook();
 
     HookGun& GetHookGun()
     {
@@ -52,9 +57,11 @@ private:
     std::unique_ptr<DirectX::GeometricPrimitive> m_cube;
     std::unique_ptr<DirectX::CommonStates> m_states;
 
+    float m_pitch = 0.0f;
     float m_yaw = 0.0f;
 
-    float m_moveSpeed = 5.0f;
+    float m_moveSpeed = 8.0f;
+    float m_runSpeed = 14.0f;
 
     HookGun m_hookGun;
 };

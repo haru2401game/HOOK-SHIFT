@@ -3,12 +3,20 @@
 
 #include "Sources/Object/ObjectManager.h"
 #include "Sources/Component/ColliderManager.h"
+#include <Sources/Object/Player.h>
 
 using namespace DirectX::SimpleMath;
 
 namespace
 {
-    constexpr float GRAVITY = -20.0f;
+    // 重力
+    constexpr float GRAVITY_POWER = -20.0f;
+
+    // フック
+    constexpr float HOOK_RANGE = 100.0f;
+    constexpr float HOOK_PULL_POWER = 40.0f;
+    constexpr float HOOK_PULL_STOP_DISTANCE = 0.5f;
+    constexpr float MAX_HOOK_PULL_SPEED = 20.0f;
 }
 
 void PhysicsManager::Update(
@@ -21,11 +29,18 @@ void PhysicsManager::Update(
         GameObject* object = obj.get();
         RigidBody& body = object->GetRigidBody();
 
+        if (body.IsStatic())
+        {
+            continue;
+        }
+
         // 重力
         if (body.UseGravity())
         {
             body.AddVelocity(
-                Vector3(0.0f, GRAVITY * deltaTime, 0.0f));
+                Vector3(0.0f, GRAVITY_POWER * deltaTime, 0.0f));
+            // 摩擦減衰
+            body.ApplyDrag(deltaTime);
         }
 
         Vector3 current = object->GetPosition();
@@ -90,5 +105,77 @@ void PhysicsManager::Update(
         }
 
         object->MoveTo(current);
+
+        Player* player = dynamic_cast<Player*>(object);
+
+        if (!player)
+        {
+            continue;
+        }
+
+        HookGun& hook = player->GetHookGun();
+
+        //===========================
+        // 発射
+        //===========================
+        if (hook.GetState() == HookState::Shooting)
+        {
+            const Collider* hitCollider = nullptr;
+            Vector3 hitPoint;
+
+            if (colliderManager.Raycast(
+                player->GetEyePosition(),
+                player->GetForward(),
+                HOOK_RANGE,
+                player,
+                hitCollider,
+                hitPoint))
+            {
+                hook.Hook(hitPoint);     // Hookedになる
+            }
+            else
+            {
+                hook.Release();
+            }
+        }
+
+        //===========================
+        // 引っ張り開始
+        //===========================
+        if (hook.GetState() == HookState::Hooked)
+        {
+            hook.StartPull();
+        }
+
+        //===========================
+        // 引っ張り中
+        //===========================
+        if (hook.GetState() == HookState::Pulling)
+        {
+            Vector3 dir =
+                hook.GetHookPoint() - player->GetPosition();
+
+            float distance = dir.Length();
+
+            if (distance < HOOK_PULL_STOP_DISTANCE){
+                hook.Release();
+            }
+            else
+            {
+                dir.Normalize();
+
+                Vector3 velocity = body.GetVelocity();
+
+                velocity += dir * HOOK_PULL_POWER * deltaTime;
+
+                if (velocity.Length() > MAX_HOOK_PULL_SPEED)
+                {
+                    velocity.Normalize();
+                    velocity *= MAX_HOOK_PULL_SPEED;
+                }
+
+                body.SetVelocity(velocity);
+            }
+        }
     }
 }

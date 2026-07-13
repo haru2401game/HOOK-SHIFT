@@ -48,24 +48,25 @@ void Camera::SetAspectRatio(float aspectRatio)
 
 void Camera::UpdateRotation(float deltaTime)
 {
-    m_pitch -= Input::GetMouseDeltaY() * MOUSE_SENSITIVITY;
+    float pitch = m_player->GetPitch();
 
-    m_pitch = std::clamp(
-        m_pitch,
+    pitch -= Input::GetMouseDeltaY() * MOUSE_SENSITIVITY;
+
+    pitch = std::clamp(
+        pitch,
         MIN_PITCH,
-        MAX_PITCH
-    );
+        MAX_PITCH);
 }
 
 Vector3 Camera::GetForward() const
 {
     float yaw = m_player->GetYaw();
-
+    float pitch = m_player->GetPitch();
     Vector3 forward;
 
-    forward.x = cosf(m_pitch) * sinf(yaw);
-    forward.y = sinf(m_pitch);
-    forward.z = cosf(m_pitch) * cosf(yaw);
+    forward.x = cosf(pitch) * sinf(yaw);
+    forward.y = sinf(pitch);
+    forward.z = cosf(pitch) * cosf(yaw);
 
     return forward;
 }
