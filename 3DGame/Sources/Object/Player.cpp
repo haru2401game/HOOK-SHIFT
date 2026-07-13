@@ -50,10 +50,8 @@ void Player::Render(
 
 void Player::UpdateRotation(float deltaTime)
 {
-    constexpr float sensitivity = 0.002f;
-
-    m_pitch -= Input::GetMouseDeltaY() * sensitivity;
-    m_yaw -= Input::GetMouseDeltaX() * sensitivity;
+    m_pitch -= Input::GetMouseDeltaY() * LOOK_SENSITIVITY;
+    m_yaw -= Input::GetMouseDeltaX() * LOOK_SENSITIVITY;
 
     constexpr float limit =
         DirectX::XM_PIDIV2 - 0.1f;
@@ -65,34 +63,53 @@ void Player::UpdateRotation(float deltaTime)
             limit);
 }
 
+Vector3 Player::GetMoveDirection() const
+{
+    Vector3 direction = Vector3::Zero;
+
+    Vector3 forward = GetForward();
+    forward.y = 0;
+    forward.Normalize();
+
+    Vector3 right = GetRight();
+
+    if (Input::GetKey('W'))
+        direction += forward;
+
+    if (Input::GetKey('S'))
+        direction -= forward;
+
+    if (Input::GetKey('A'))
+        direction += right;
+
+    if (Input::GetKey('D'))
+        direction -= right;
+
+    if (direction.LengthSquared() > 0)
+    {
+        direction.Normalize();
+    }
+
+    return direction;
+}
+
 Vector3 Player::GetNextPosition(float deltaTime) const
 {
-    Vector3 forward(sinf(m_yaw), 0.0f, cosf(m_yaw));
-    Vector3 right(cosf(m_yaw), 0.0f, -sinf(m_yaw));
-
-    Vector3 move = Vector3::Zero;
-
-    if (Input::GetKey('W')) move += forward;
-    if (Input::GetKey('S')) move -= forward;
-    if (Input::GetKey('A')) move += right;
-    if (Input::GetKey('D')) move -= right;
-
-    if (move.LengthSquared() > 0.0f)
-    {
-        move.Normalize();
-    }
-
     Vector3 next = GetPosition();
 
-    float speed = m_moveSpeed;
+    float speed =
+        Input::GetKey(VK_SHIFT)
+        ? m_runSpeed
+        : m_moveSpeed;
 
-    if (Input::GetKey(VK_SHIFT))
-    {
-        speed = m_runSpeed;
-    }
+    next +=
+        GetMoveDirection()
+        * speed
+        * deltaTime;
 
-    next += move * speed * deltaTime;
-    next += GetRigidBody().GetVelocity() * deltaTime;
+    next +=
+        GetRigidBody().GetVelocity()
+        * deltaTime;
 
     return next;
 }
@@ -169,7 +186,7 @@ Vector3 Player::GetUp() const
 Vector3 Player::GetEyePosition() const
 {
     Vector3 eye = GetPosition();
-    eye.y += 0.0f;
+    eye.y += EYE_HEIGHT;
 
     return eye;
 }
@@ -199,7 +216,7 @@ void Player::ReleaseHook()
     m_hookGun.Release();
 
     oldVelocity +=
-        hookVelocity * 10.0f;
+        hookVelocity * HOOK_RELEASE_POWER;
 
     GetRigidBody()
         .SetVelocity(oldVelocity);

@@ -15,6 +15,7 @@ public:
         const Matrix& view,
         const Matrix& projection) override;
 
+    Vector3 GetMoveDirection() const;
     Vector3 GetNextPosition(float deltaTime) const override;
 
     void MoveTo(const Vector3& position) override;
@@ -37,15 +38,8 @@ public:
     void ShootHook();
     void ReleaseHook();
 
-    HookGun& GetHookGun()
-    {
-        return m_hookGun;
-    }
-
-    const HookGun& GetHookGun() const
-    {
-        return m_hookGun;
-    }
+    HookGun& GetHookGun() { return m_hookGun; }
+    const HookGun& GetHookGun() const { return m_hookGun; }
 
 private:
 
@@ -64,4 +58,18 @@ private:
     float m_runSpeed = 14.0f;
 
     HookGun m_hookGun;
+
+private:
+
+    static constexpr float LOOK_SENSITIVITY = 0.002f;
+
+    static constexpr float RUN_SPEED = 10.0f;
+
+    static constexpr float HOOK_RELEASE_POWER = 10.0f;
+
+    static constexpr float EYE_HEIGHT = 0.0f;
+
+    static constexpr float HOOK_OFFSET_RIGHT = 0.35f;
+    static constexpr float HOOK_OFFSET_DOWN = 0.25f;
+    static constexpr float HOOK_OFFSET_FORWARD = 0.5f;
 };
