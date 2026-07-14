@@ -1,19 +1,9 @@
 #include "pch.h"
 #include "Player.h"
+#include "Sources/Component/ColliderManager.h";
 
 void Player::Initialize(DX::DeviceResources* deviceResources)
 {
-    m_deviceResources = deviceResources;
-
-    SetPosition({ 0.0f, 2.0f, -5.0f });
-    SetScale({ 1.0f, 2.0f, 1.0f });
-
-    auto device = deviceResources->GetD3DDevice();
-    auto context = deviceResources->GetD3DDeviceContext();
-
-    m_cube = DirectX::GeometricPrimitive::CreateCube(context);
-    m_states = std::make_unique<DirectX::CommonStates>(device);
-
     // フックガンモデルの初期化処理
     m_hookGunModel.Initialize(deviceResources);
 }
@@ -21,6 +11,7 @@ void Player::Initialize(DX::DeviceResources* deviceResources)
 void Player::Update(float deltaTime)
 {
     UpdateRotation(deltaTime);
+
     m_hookGunModel.UpdateTransform();
 
     if (Input::GetKeyDown(VK_SPACE))
@@ -28,10 +19,15 @@ void Player::Update(float deltaTime)
         ReleaseHook();
         Jump();
     }
+
     if (Input::GetKeyDown(VK_RBUTTON))
     {
         ShootHook();
     }
+
+    UpdateHook(
+        *m_colliderManager,
+        deltaTime);
 }
 
 void Player::Render(
@@ -39,6 +35,113 @@ void Player::Render(
     const Matrix&)
 {
     // プレイヤー描画を入れてもいい
+}
+
+void Player::UpdateHook(
+    ColliderManager& colliderManager,
+    float deltaTime)
+{
+    HookGun& hook = m_hookGun;
+
+
+    if (hook.GetState() == HookState::Shooting)
+    {
+        const Collider* hitCollider = nullptr;
+
+        Vector3 hitPoint;
+
+
+        if (colliderManager.Raycast(
+            GetEyePosition(),
+            GetForward(),
+            50.0f,
+            this,
+            hitCollider,
+            hitPoint))
+        {
+            hook.Hook(hitPoint);
+        }
+        else
+        {
+            hook.Release();
+        }
+    }
+
+
+    if (hook.GetState() == HookState::Hooked)
+    {
+        hook.StartPull();
+
+
+        Vector3 dir =
+            hook.GetHookPoint()
+            - GetPosition();
+
+
+        dir.Normalize();
+
+
+        auto& body =
+            GetRigidBody();
+
+
+        Vector3 velocity =
+            body.GetVelocity();
+
+
+        velocity +=
+            dir * 15.0f;
+
+
+        body.SetVelocity(velocity);
+    }
+
+
+    if (hook.GetState() == HookState::Pulling)
+    {
+        Vector3 dir =
+            hook.GetHookPoint()
+            - GetPosition();
+
+
+        float distance =
+            dir.Length();
+
+
+        if (distance < 4.0f)
+        {
+            hook.Release();
+            return;
+        }
+
+
+        dir.Normalize();
+
+
+        auto& body =
+            GetRigidBody();
+
+
+        Vector3 velocity =
+            body.GetVelocity();
+
+        velocity +=
+            dir * 35.0f * deltaTime;
+
+
+        float speed =
+            velocity.Length();
+
+
+        if (speed > 60.0f)
+        {
+            velocity.Normalize();
+            velocity *= 60.0f;
+        }
+
+
+        body.SetVelocity(velocity);
+    }
 }
 
 void Player::UpdateRotation(float deltaTime)
@@ -129,6 +232,12 @@ void Player::Jump()
 
     body.SetVelocity(velocity);
     body.SetGround(false);
+}
+
+void Player::SetColliderManager(
+    ColliderManager* colliderManager)
+{
+    m_colliderManager = colliderManager;
 }
 
 Vector3 Player::GetForward() const

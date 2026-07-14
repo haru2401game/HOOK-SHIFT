@@ -4,6 +4,8 @@
 #include "Sources/Item/HookGun.h"
 #include "Sources/Item/HookGunModel.h"
 
+class ColliderManager;
+
 class Player : public GameObject
 {
 public:
@@ -25,6 +27,9 @@ public:
 
     void Jump();
 
+    void SetColliderManager(
+        ColliderManager* colliderManager);
+
     float GetYaw() const { return m_yaw; }
     float GetPitch() const{ return m_pitch; }
     Vector3 GetForward() const;
@@ -35,7 +40,6 @@ public:
     Vector3 GetHookPoint() const;
 
     // ----- フックガン関連 ----- //
-
     void ShootHook();
     void ReleaseHook();
     void RenderViewModel(const Matrix& projection);
@@ -48,11 +52,11 @@ public:
 
 private:
 
+    void UpdateHook(ColliderManager& colliderManager,float deltaTime);
     void UpdateRotation(float deltaTime);
 
 private:
-    std::unique_ptr<DirectX::GeometricPrimitive> m_cube;
-    std::unique_ptr<DirectX::CommonStates> m_states;
+    ColliderManager* m_colliderManager = nullptr;
 
     float m_pitch = 0.0f;
     float m_yaw = 0.0f;

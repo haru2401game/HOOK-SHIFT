@@ -360,6 +360,9 @@ void GameScene::CreateObjects()
     auto player =
         std::make_unique<Player>();
 
+    player->SetColliderManager(
+        m_colliderManager.get());
+
     player->SetPosition(stage.playerSpawn);
 
     m_objectManager->Add(
