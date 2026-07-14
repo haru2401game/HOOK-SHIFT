@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Camera.h"
-#include "Sources/Input.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -16,9 +15,8 @@ Matrix Camera::GetView() const
         return Matrix::Identity;
     }
 
-    Vector3 position = m_player->GetPosition();
-
-    Vector3 target = position + GetForward();
+    Vector3 position = m_player->GetEyePosition();
+    Vector3 target = position + m_player->GetForward();
 
     return Matrix::CreateLookAt(
         position,
@@ -45,17 +43,4 @@ void Camera::SetPlayer(const Player* player)
 void Camera::SetAspectRatio(float aspectRatio)
 {
     m_aspectRatio = aspectRatio;
-}
-
-Vector3 Camera::GetForward() const
-{
-    float yaw = m_player->GetYaw();
-    float pitch = m_player->GetPitch();
-    Vector3 forward;
-
-    forward.x = cosf(pitch) * sinf(yaw);
-    forward.y = sinf(pitch);
-    forward.z = cosf(pitch) * cosf(yaw);
-
-    return forward;
 }

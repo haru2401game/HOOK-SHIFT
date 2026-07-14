@@ -14,8 +14,7 @@ void Player::Initialize(DX::DeviceResources* deviceResources)
     m_cube = DirectX::GeometricPrimitive::CreateCube(context);
     m_states = std::make_unique<DirectX::CommonStates>(device);
 
-    // フックガンの初期化処理
-    m_hookGun.Initialize(deviceResources);
+    // フックガンモデルの初期化処理
     m_hookGunModel.Initialize(deviceResources);
 }
 
