@@ -35,7 +35,8 @@ HookState HookGun::GetState() const
 
 bool HookGun::IsHooked() const
 {
-    return m_state == HookState::Hooked;
+    return m_state == HookState::Hooked
+        || m_state == HookState::Pulling;
 }
 
 const Vector3& HookGun::GetHookPoint() const

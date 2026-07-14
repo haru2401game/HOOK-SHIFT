@@ -13,10 +13,10 @@ namespace
     constexpr float GRAVITY_POWER = -20.0f;
 
     // フック
-    constexpr float HOOK_RANGE = 100.0f;
-    constexpr float HOOK_PULL_POWER = 40.0f;
-    constexpr float HOOK_PULL_STOP_DISTANCE = 0.5f;
-    constexpr float MAX_HOOK_PULL_SPEED = 20.0f;
+    constexpr float HOOK_RANGE = 50.0f;
+    constexpr float HOOK_PULL_POWER = 50.0f;
+    constexpr float HOOK_PULL_STOP_DISTANCE = 1.0f;
+    constexpr float MAX_HOOK_PULL_SPEED = 40.0f;
 }
 
 void PhysicsManager::Update(

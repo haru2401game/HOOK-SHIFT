@@ -26,6 +26,15 @@
     <Filter Include="Sources\Item">
       <UniqueIdentifier>{e2da9c4f-abff-49c4-946d-ea4eaba64d1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\StageData">
+      <UniqueIdentifier>{4ce034bf-4dce-49c5-bd8e-688ccd4a26c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{0438791d-cce9-4338-add7-23f596ab91dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Stages">
+      <UniqueIdentifier>{8a25f5d5-219b-4019-a41a-917d3d9b858a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -87,6 +96,15 @@
     <ClInclude Include="Sources\Item\HookGun.h">
       <Filter>Sources\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\StageData\StageData.h">
+      <Filter>Sources\StageData</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\StageData\StageLoader.h">
+      <Filter>Sources\StageData</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\StageData\StageBuilder.h">
+      <Filter>Sources\StageData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -143,6 +161,12 @@
     <ClCompile Include="Sources\Item\HookGun.cpp">
       <Filter>Sources\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\StageData\StageBuilder.cpp">
+      <Filter>Sources\StageData</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\StageData\StageLoader.cpp">
+      <Filter>Sources\StageData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -159,5 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Stages\Stage1.json">
+      <Filter>Resources\Stages</Filter>
+    </None>
   </ItemGroup>
 </Project>

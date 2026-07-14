@@ -172,11 +172,9 @@ Vector3 Player::GetRight() const
 Vector3 Player::GetUp() const
 {
     Vector3 forward = GetForward();
-
     Vector3 right = GetRight();
 
-    Vector3 up =
-        right.Cross(forward);
+    Vector3 up = forward.Cross(right);
 
     up.Normalize();
 

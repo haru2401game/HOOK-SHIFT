@@ -203,12 +203,12 @@ void GameScene::DrawHookWire()
         player->GetRight();
 
     Vector3 up =
-        player->GetUp();
+        forward.Cross(right);
 
 
     Vector3 start =
         eye
-        + right * 0.35f
+        - right * 0.35f
         - up * 0.25f
         + forward * 0.5f;
 
@@ -331,119 +331,23 @@ void GameScene::CreateCamera()
 
 void GameScene::CreateObjects()
 {
+    StageData stage =
+        m_stageLoader.Load(
+            "Resources/Stages/Stage1.json");
+
     // プレイヤー
     auto player =
         std::make_unique<Player>();
 
+    player->SetPosition(stage.playerSpawn);
+
     m_objectManager->Add(
-        std::move(player)
-    );
+        std::move(player));
 
-    // 床
-    auto floor =
-        std::make_unique<Floor>(
-            Vector3(0, -0.5f, 0),
-            Vector3(50, 1, 50)
-        );
-    floor->GetRigidBody().SetStatic(true);
-    floor->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(floor));
-
-
-    // 壁
-    // 奥
-    auto wall1 =
-        std::make_unique<Wall>(
-            Vector3(0, 5, 25),
-            Vector3(50, 10, 1)
-        );
-    wall1->GetRigidBody().SetStatic(true);
-    wall1->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(wall1));
-
-    // 手前
-    auto wall2 =
-        std::make_unique<Wall>(
-            Vector3(0, 5, -25),
-            Vector3(50, 10, 1)
-        );
-    wall2->GetRigidBody().SetStatic(true);
-    wall2->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(wall2));
-
-
-    // 左
-    auto wall3 =
-        std::make_unique<Wall>(
-            Vector3(-25, 5, 0),
-            Vector3(1, 10, 50)
-        );
-    wall3->GetRigidBody().SetStatic(true);
-    wall3->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(wall3));
-
-
-    // 右
-    auto wall4 =
-        std::make_unique<Wall>(
-            Vector3(25, 5, 0),
-            Vector3(1, 10, 50)
-        );
-    wall4->GetRigidBody().SetStatic(true);
-    wall4->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(wall4));
-
-
-
-    // テスト用障害物
-    auto block1 =
-        std::make_unique<Wall>(
-            Vector3(0, 2, 5),
-            Vector3(2, 4, 8)
-        );
-    block1->GetRigidBody().SetStatic(true);
-    block1->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(block1));
-
-
-    auto block2 =
-        std::make_unique<Wall>(
-            Vector3(8, 3, 12),
-            Vector3(3, 6, 3)
-        );
-    block2->GetRigidBody().SetStatic(true);
-    block2->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(block2));
-
-
-    auto block3 =
-        std::make_unique<Wall>(
-            Vector3(-10, 1.5f, 8),
-            Vector3(4, 3, 10)
-        );
-    block3->GetRigidBody().SetStatic(true);
-    block3->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(block3));
-
-
-    auto block4 =
-        std::make_unique<Wall>(
-            Vector3(12, 4, -5),
-            Vector3(2, 8, 5)
-        );
-    block4->GetRigidBody().SetStatic(true);
-    block4->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(block4));
-
-
-    auto block5 =
-        std::make_unique<Wall>(
-            Vector3(-15, 5, -10),
-            Vector3(3, 10, 3)
-        );
-    block5->GetRigidBody().SetStatic(true);
-    block5->GetRigidBody().SetUseGravity(false);
-    m_objectManager->Add(std::move(block5));
+    // ステージ生成
+    m_stageBuilder.Build(
+        stage,
+        *m_objectManager);
 }
 
 void GameScene::CreateObjectManager()

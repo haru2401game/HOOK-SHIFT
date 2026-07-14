@@ -48,5 +48,15 @@ void Floor::Render(
         Matrix::CreateScale(GetScale()) *
         Matrix::CreateTranslation(GetPosition());
 
-    m_cube->Draw(world, view, projection);
+    Color color(
+        GetColor().x,
+        GetColor().y,
+        GetColor().z,
+        1.0f);
+
+    m_cube->Draw(
+        world,
+        view,
+        projection,
+        color);
 }

@@ -5,7 +5,11 @@
 #include "Sources/Object/Camera.h"
 #include "Sources/Object/ObjectManager.h"
 #include "Sources/Component/ColliderManager.h"
-#include <Sources/Physics/PhysicsManager.h>
+#include "Sources/Physics/PhysicsManager.h"
+
+#include "Sources/StageData/StageLoader.h"
+#include "Sources/StageData/StageBuilder.h"
+
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>
 #include <Effects.h>
@@ -61,4 +65,7 @@ private:
 
     bool m_hasDebugPoint = false;
     Vector3 m_debugPoint = Vector3::Zero;
+
+    StageLoader m_stageLoader;
+    StageBuilder m_stageBuilder;
 };

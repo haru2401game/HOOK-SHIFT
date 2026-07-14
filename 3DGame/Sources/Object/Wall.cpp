@@ -46,11 +46,15 @@ void Wall::Render(
         Matrix::CreateScale(GetScale()) *
         Matrix::CreateTranslation(GetPosition());
 
+    Color color(
+        GetColor().x,
+        GetColor().y,
+        GetColor().z,
+        1.0f);
+
     m_cube->Draw(
         world,
         view,
         projection,
-        Colors::Gray,
-        nullptr,
-        false);
+        color);
 }

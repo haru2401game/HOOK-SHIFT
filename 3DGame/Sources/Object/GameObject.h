@@ -38,6 +38,11 @@ public:
         return m_scale;
     }
 
+    const Vector3& GetColor() const
+    {
+        return m_color;
+    }
+
     Collider& GetCollider()
     {
         return m_collider;
@@ -72,7 +77,7 @@ public:
     {
     }
 
-protected:
+public:
 
     void SetPosition(
         const Vector3& position);
@@ -82,6 +87,9 @@ protected:
 
     void SetScale(
         const Vector3& scale);
+
+    void SetColor(
+        const Vector3& color);
 
     void UpdateCollider();
 
@@ -94,6 +102,8 @@ protected:
     Vector3 m_rotation = Vector3::Zero;
 
     Vector3 m_scale = Vector3::One;
+
+    Vector3 m_color = Vector3::One;
 
     Collider m_collider;
     RigidBody m_rigidBody;

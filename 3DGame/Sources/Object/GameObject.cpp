@@ -31,6 +31,11 @@ void GameObject::SetScale(
     m_collider.SetSize(scale);
 }
 
+void GameObject::SetColor(const Vector3& color)
+{
+    m_color = color;
+}
+
 
 void GameObject::UpdateCollider()
 {
