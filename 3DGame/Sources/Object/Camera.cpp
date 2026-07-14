@@ -6,7 +6,7 @@ using namespace DirectX::SimpleMath;
 
 void Camera::Update(float deltaTime)
 {
-    UpdateRotation(deltaTime);
+    //更新処理
 }
 
 Matrix Camera::GetView() const
@@ -17,6 +17,7 @@ Matrix Camera::GetView() const
     }
 
     Vector3 position = m_player->GetPosition();
+
     Vector3 target = position + GetForward();
 
     return Matrix::CreateLookAt(
@@ -44,18 +45,6 @@ void Camera::SetPlayer(const Player* player)
 void Camera::SetAspectRatio(float aspectRatio)
 {
     m_aspectRatio = aspectRatio;
-}
-
-void Camera::UpdateRotation(float deltaTime)
-{
-    float pitch = m_player->GetPitch();
-
-    pitch -= Input::GetMouseDeltaY() * MOUSE_SENSITIVITY;
-
-    pitch = std::clamp(
-        pitch,
-        MIN_PITCH,
-        MAX_PITCH);
 }
 
 Vector3 Camera::GetForward() const

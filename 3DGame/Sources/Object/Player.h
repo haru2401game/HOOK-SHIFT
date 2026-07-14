@@ -2,6 +2,7 @@
 #include <CommonStates.h>
 #include "GameObject.h"
 #include "Sources/Item/HookGun.h"
+#include "Sources/Item/HookGunModel.h"
 
 class Player : public GameObject
 {
@@ -37,17 +38,19 @@ public:
 
     void ShootHook();
     void ReleaseHook();
+    void RenderViewModel(const Matrix& projection);
+    Vector3 GetWorldMuzzlePosition() const;
 
     HookGun& GetHookGun() { return m_hookGun; }
     const HookGun& GetHookGun() const { return m_hookGun; }
+    HookGunModel& GetHookGunModel() { return m_hookGunModel; }
+    const HookGunModel& GetHookGunModel() const { return m_hookGunModel; }
 
 private:
 
     void UpdateRotation(float deltaTime);
 
 private:
-    constexpr static float JUMP_POWER = 8.0f;
-
     std::unique_ptr<DirectX::GeometricPrimitive> m_cube;
     std::unique_ptr<DirectX::CommonStates> m_states;
 
@@ -58,8 +61,10 @@ private:
     float m_runSpeed = 14.0f;
 
     HookGun m_hookGun;
+    HookGunModel m_hookGunModel;
 
 private:
+    constexpr static float JUMP_POWER = 8.0f;
 
     static constexpr float LOOK_SENSITIVITY = 0.002f;
 

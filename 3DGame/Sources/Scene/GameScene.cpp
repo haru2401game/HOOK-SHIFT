@@ -88,18 +88,28 @@ void GameScene::Finalize()
 
 void GameScene::Update(float deltaTime)
 {
+    // リセット
+    if (Input::GetKeyDown('R'))
+    {
+        ResetStage();
+        return;
+    }
+
+    Player* player = m_objectManager->GetObject<Player>();
+
+    // オブジェクト更新
     m_objectManager->Update(deltaTime);
 
+    // 物理処理更新
     m_physicsManager->Update(
         *m_objectManager,
         *m_colliderManager,
         deltaTime);
 
+    // カメラ関連更新
     m_camera->Update(deltaTime);
 
-    Player* player =
-        m_objectManager->GetObject<Player>();
-
+    // フックポイント更新
     if (player->GetHookGun().IsHooked())
     {
         m_hasDebugPoint = true;
@@ -116,9 +126,33 @@ void GameScene::Render()
     Matrix view = m_camera->GetView();
     Matrix proj = m_camera->GetProjection();
 
+    Player* player =
+        m_objectManager->GetObject<Player>();
+
+    auto size =
+        m_deviceResources->GetOutputSize();
+
+    float aspect =
+        static_cast<float>(size.right - size.left) /
+        static_cast<float>(size.bottom - size.top);
+
+    Matrix gunProjection =
+        Matrix::CreatePerspectiveFieldOfView(
+            XMConvertToRadians(70.0f),
+            aspect,
+            0.01f,
+            100.0f);
+
+    // ステージの描画
     m_objectManager->Render(
         view,
         proj);
+
+    // ワイヤーの描画
+    DrawHookWire();
+
+    // フックガンモデルの描画
+    player->RenderViewModel(gunProjection);
 
     if (m_hasDebugPoint)
     {
@@ -126,27 +160,16 @@ void GameScene::Render()
             Matrix::CreateScale(0.3f) *
             Matrix::CreateTranslation(m_debugPoint);
 
+        // フックポイントの描画
         m_debugCube->Draw(
             world,
             view,
             proj,
             DirectX::Colors::Red);
     }
-    DrawHookWire();
+
+    // クロスヘアの描画
     DrawCrossHair();
-
-    if (m_hasDebugPoint)
-    {
-        Matrix world =
-            Matrix::CreateScale(0.3f) *
-            Matrix::CreateTranslation(m_debugPoint);
-
-        m_debugCube->Draw(
-            world,
-            view,
-            proj,
-            Colors::Red);
-    }
 }
 
 void GameScene::DrawHookWire()
@@ -196,21 +219,8 @@ void GameScene::DrawHookWire()
     Vector3 eye =
         player->GetEyePosition();
 
-    Vector3 forward =
-        player->GetForward();
-
-    Vector3 right =
-        player->GetRight();
-
-    Vector3 up =
-        forward.Cross(right);
-
-
     Vector3 start =
-        eye
-        - right * 0.35f
-        - up * 0.25f
-        + forward * 0.5f;
+        player->GetWorldMuzzlePosition();
 
     Vector3 end =
         hook.GetHookPoint();
@@ -308,6 +318,17 @@ void GameScene::SetDebugPoint(
 {
     m_debugPoint = point;
     m_hasDebugPoint = true;
+}
+
+void GameScene::ResetStage()
+{
+    CreateColliderManager();
+    CreateObjectManager();
+    CreatePhysicsManager();
+    CreateObjects();
+    CreateCamera();
+
+    m_hasDebugPoint = false;
 }
 
 void GameScene::CreateCamera()

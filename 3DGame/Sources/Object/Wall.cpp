@@ -40,8 +40,6 @@ void Wall::Render(
     const Matrix& view,
     const Matrix& projection)
 {
-    auto context = m_deviceResources->GetD3DDeviceContext();
-
     Matrix world =
         Matrix::CreateScale(GetScale()) *
         Matrix::CreateTranslation(GetPosition());

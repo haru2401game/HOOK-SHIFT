@@ -32,6 +32,8 @@ public:
     void SetDebugPoint(
         const Vector3& point);
 
+    void ResetStage();
+
 private:
     void CreateCamera();
     // ステージロード機能実装後移動予定

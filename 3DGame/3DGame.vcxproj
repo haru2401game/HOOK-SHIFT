@@ -192,6 +192,7 @@
     <ClInclude Include="Sources\Cursor.h" />
     <ClInclude Include="Sources\Input.h" />
     <ClInclude Include="Sources\Item\HookGun.h" />
+    <ClInclude Include="Sources\Item\HookGunModel.h" />
     <ClInclude Include="Sources\Object\Camera.h" />
     <ClInclude Include="Sources\Object\Floor.h" />
     <ClInclude Include="Sources\Object\GameObject.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="Sources\Cursor.cpp" />
     <ClCompile Include="Sources\Input.cpp" />
     <ClCompile Include="Sources\Item\HookGun.cpp" />
+    <ClCompile Include="Sources\Item\HookGunModel.cpp" />
     <ClCompile Include="Sources\Object\Camera.cpp" />
     <ClCompile Include="Sources\Object\Floor.cpp" />
     <ClCompile Include="Sources\Object\GameObject.cpp" />

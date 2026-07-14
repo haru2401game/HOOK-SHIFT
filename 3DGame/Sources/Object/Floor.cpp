@@ -41,9 +41,6 @@ void Floor::Render(
 {
     auto context = m_deviceResources->GetD3DDeviceContext();
 
-    context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-    context->RSSetState(m_states->CullCounterClockwise());
-
     Matrix world =
         Matrix::CreateScale(GetScale()) *
         Matrix::CreateTranslation(GetPosition());

@@ -14,9 +14,9 @@ namespace
 
     // フック
     constexpr float HOOK_RANGE = 50.0f;
-    constexpr float HOOK_PULL_POWER = 50.0f;
-    constexpr float HOOK_PULL_STOP_DISTANCE = 1.0f;
-    constexpr float MAX_HOOK_PULL_SPEED = 40.0f;
+    constexpr float HOOK_PULL_POWER = 35.0f;
+    constexpr float MAX_HOOK_PULL_SPEED = 60.0f;
+    constexpr float HOOK_PULL_STOP_DISTANCE = 4.0f;
 }
 
 void PhysicsManager::Update(
@@ -94,14 +94,23 @@ void PhysicsManager::Update(
         }
         else
         {
-            // 着地
+            bool wasGround =
+                body.IsGround();
+
+
             Vector3 velocity = body.GetVelocity();
             velocity.y = 0.0f;
             body.SetVelocity(velocity);
 
+
             body.SetGround(true);
 
-            object->OnGroundCollision(current.y);
+
+            // 空中から着地した瞬間だけ
+            if (!wasGround)
+            {
+                object->OnGroundCollision(current.y);
+            }
         }
 
         object->MoveTo(current);
@@ -145,6 +154,18 @@ void PhysicsManager::Update(
         if (hook.GetState() == HookState::Hooked)
         {
             hook.StartPull();
+
+            Vector3 dir =
+                hook.GetHookPoint() - player->GetPosition();
+
+            dir.Normalize();
+
+            Vector3 velocity = body.GetVelocity();
+
+            // 最初だけ一気に加速
+            velocity += dir * 15.0f;
+
+            body.SetVelocity(velocity);
         }
 
         //===========================
@@ -157,22 +178,34 @@ void PhysicsManager::Update(
 
             float distance = dir.Length();
 
-            if (distance < HOOK_PULL_STOP_DISTANCE){
+
+            if (distance < HOOK_PULL_STOP_DISTANCE)
+            {
                 hook.Release();
             }
             else
             {
                 dir.Normalize();
 
-                Vector3 velocity = body.GetVelocity();
+                Vector3 velocity =
+                    body.GetVelocity();
 
-                velocity += dir * HOOK_PULL_POWER * deltaTime;
 
-                if (velocity.Length() > MAX_HOOK_PULL_SPEED)
+                // フック方向への加速度
+                velocity +=
+                    dir * HOOK_PULL_POWER * deltaTime;
+
+
+                // 最大速度制限
+                float speed =
+                    velocity.Length();
+
+                if (speed > MAX_HOOK_PULL_SPEED)
                 {
                     velocity.Normalize();
                     velocity *= MAX_HOOK_PULL_SPEED;
                 }
+
 
                 body.SetVelocity(velocity);
             }

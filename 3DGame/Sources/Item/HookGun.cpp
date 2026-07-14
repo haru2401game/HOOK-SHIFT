@@ -3,11 +3,7 @@
 
 void HookGun::Initialize(DX::DeviceResources* deviceResources)
 {
-    auto context =
-        deviceResources->GetD3DDeviceContext();
-
-    m_wire =
-        DirectX::GeometricPrimitive::CreateCube(context);
+    deviceResources;
 }
 
 void HookGun::Update(float deltaTime)

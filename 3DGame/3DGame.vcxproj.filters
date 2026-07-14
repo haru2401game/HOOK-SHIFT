@@ -105,6 +105,9 @@
     <ClInclude Include="Sources\StageData\StageBuilder.h">
       <Filter>Sources\StageData</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Item\HookGunModel.h">
+      <Filter>Sources\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="Sources\StageData\StageLoader.cpp">
       <Filter>Sources\StageData</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Item\HookGunModel.cpp">
+      <Filter>Sources\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

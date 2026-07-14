@@ -16,11 +16,13 @@ void Player::Initialize(DX::DeviceResources* deviceResources)
 
     // フックガンの初期化処理
     m_hookGun.Initialize(deviceResources);
+    m_hookGunModel.Initialize(deviceResources);
 }
 
 void Player::Update(float deltaTime)
 {
     UpdateRotation(deltaTime);
+    m_hookGunModel.UpdateTransform();
 
     if (Input::GetKeyDown(VK_SPACE))
     {
@@ -34,18 +36,10 @@ void Player::Update(float deltaTime)
 }
 
 void Player::Render(
-    const Matrix& view,
-    const Matrix& projection)
+    const Matrix&,
+    const Matrix&)
 {
-    Matrix world =
-        Matrix::CreateScale(GetScale()) *
-        Matrix::CreateTranslation(GetPosition());
-
-    m_cube->Draw(
-        world,
-        view,
-        projection,
-        DirectX::Colors::Blue);
+    // プレイヤー描画を入れてもいい
 }
 
 void Player::UpdateRotation(float deltaTime)
@@ -121,7 +115,7 @@ void Player::MoveTo(const Vector3& position)
 
 void Player::OnGroundCollision(float y)
 {
-    // 必要になったら着地エフェクトやSEをここに書く
+    // 着地処理
 }
 
 void Player::Jump()
@@ -218,4 +212,21 @@ void Player::ReleaseHook()
 
     GetRigidBody()
         .SetVelocity(oldVelocity);
+}
+
+void Player::RenderViewModel(
+    const Matrix& projection)
+{
+    m_hookGunModel.Render(projection);
+}
+
+Vector3 Player::GetWorldMuzzlePosition() const
+{
+    Vector3 muzzle =
+        GetEyePosition()
+        + GetForward() * 0.8f
+        - GetRight() * 0.35f
+        - GetUp() * 0.35f;
+
+    return muzzle;
 }
