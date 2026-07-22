@@ -1,13 +1,19 @@
 #include "pch.h"
 #include "StageBuilder.h"
 
-#include <Sources/Object/Floor.h>
-#include <Sources/Object/Wall.h>
+#include "Sources/Object/Floor.h"
+#include "Sources/Object/Wall.h"
+
+#include "Sources/StageData/CityGenerator.h"
 
 void StageBuilder::Build(
     const StageData& stage,
     ObjectManager& objectManager)
 {
+    //----------------------------------------
+    // JSONで配置されたオブジェクト
+    //----------------------------------------
+
     for (const auto& obj : stage.objects)
     {
         if (obj.type == "Floor")
@@ -21,7 +27,8 @@ void StageBuilder::Build(
 
             floor->GetRigidBody().SetStatic(true);
 
-            objectManager.Add(std::move(floor));
+            objectManager.Add(
+                std::move(floor));
         }
         else if (obj.type == "Wall")
         {
@@ -34,7 +41,21 @@ void StageBuilder::Build(
 
             wall->GetRigidBody().SetStatic(true);
 
-            objectManager.Add(std::move(wall));
+            objectManager.Add(
+                std::move(wall));
         }
+    }
+
+    //----------------------------------------
+    // シードから街生成
+    //----------------------------------------
+
+    if (stage.hasCity)
+    {
+        CityGenerator generator;
+
+        generator.Generate(
+            objectManager,
+            stage.city);
     }
 }

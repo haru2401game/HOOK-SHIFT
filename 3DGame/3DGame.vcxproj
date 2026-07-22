@@ -204,6 +204,7 @@
     <ClInclude Include="Sources\Scene\Scene.h" />
     <ClInclude Include="Sources\Scene\SceneManager.h" />
     <ClInclude Include="Sources\Scene\TitleScene.h" />
+    <ClInclude Include="Sources\StageData\CityGenerator.h" />
     <ClInclude Include="Sources\StageData\StageBuilder.h" />
     <ClInclude Include="Sources\StageData\StageData.h" />
     <ClInclude Include="Sources\StageData\StageLoader.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="Sources\Scene\GameScene.cpp" />
     <ClCompile Include="Sources\Scene\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
+    <ClCompile Include="Sources\StageData\CityGenerator.cpp" />
     <ClCompile Include="Sources\StageData\StageBuilder.cpp" />
     <ClCompile Include="Sources\StageData\StageLoader.cpp" />
   </ItemGroup>

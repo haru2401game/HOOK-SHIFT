@@ -22,5 +22,5 @@ private:
     // カメラ設定
     static constexpr float FOV = DirectX::XMConvertToRadians(60.0f);
     static constexpr float NEAR_CLIP = 0.1f;
-    static constexpr float FAR_CLIP = 1000.0f;
+    static constexpr float FAR_CLIP = 10000.0f;
 };

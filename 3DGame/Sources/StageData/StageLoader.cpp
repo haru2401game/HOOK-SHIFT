@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 #include <nlohmann/json.hpp>
 
@@ -26,7 +27,12 @@ StageData StageLoader::Load(const std::string& fileName)
 StageData StageLoader::ParseJson(const std::string& jsonText)
 {
     json root = json::parse(jsonText);
+
     StageData stage;
+
+    //----------------------------------------
+    // Player Spawn
+    //----------------------------------------
 
     if (root.contains("playerSpawn"))
     {
@@ -40,58 +46,88 @@ StageData StageLoader::ParseJson(const std::string& jsonText)
         };
     }
 
-    for (const auto& obj : root["objects"])
+    //----------------------------------------
+    // City
+    //----------------------------------------
+
+    if (root.contains("city"))
     {
-        StageObjectData data;
+        stage.hasCity = true;
 
-        data.type = obj["type"].get<std::string>();
+        auto city = root["city"];
 
-        auto pos = obj["position"];
+        if (city.contains("seed"))
+            stage.city.seed = city["seed"].get<unsigned int>();
 
-        data.position =
+        if (city.contains("size"))
+            stage.city.size = city["size"].get<float>();
+
+        if (city.contains("blockSize"))
+            stage.city.blockSize = city["blockSize"].get<float>();
+
+        if (city.contains("roadWidth"))
+            stage.city.roadWidth = city["roadWidth"].get<float>();
+    }
+
+    //----------------------------------------
+    // Objects
+    //----------------------------------------
+
+    if (root.contains("objects"))
+    {
+        for (const auto& obj : root["objects"])
         {
-            pos[0].get<float>(),
-            pos[1].get<float>(),
-            pos[2].get<float>()
-        };
+            StageObjectData data;
 
-        if (obj.contains("scale"))
-        {
-            auto scale = obj["scale"];
+            data.type = obj["type"].get<std::string>();
 
-            data.scale =
+            auto pos = obj["position"];
+
+            data.position =
             {
-                scale[0].get<float>(),
-                scale[1].get<float>(),
-                scale[2].get<float>()
+                pos[0].get<float>(),
+                pos[1].get<float>(),
+                pos[2].get<float>()
             };
-        }
 
-        if (obj.contains("rotation"))
-        {
-            auto rot = obj["rotation"];
-
-            data.rotation =
+            if (obj.contains("scale"))
             {
-                rot[0].get<float>(),
-                rot[1].get<float>(),
-                rot[2].get<float>()
-            };
-        }
+                auto scale = obj["scale"];
 
-        if (obj.contains("color"))
-        {
-            auto color = obj["color"];
+                data.scale =
+                {
+                    scale[0].get<float>(),
+                    scale[1].get<float>(),
+                    scale[2].get<float>()
+                };
+            }
 
-            data.color =
+            if (obj.contains("rotation"))
             {
-                color[0].get<float>(),
-                color[1].get<float>(),
-                color[2].get<float>()
-            };
-        }
+                auto rot = obj["rotation"];
 
-        stage.objects.push_back(data);
+                data.rotation =
+                {
+                    rot[0].get<float>(),
+                    rot[1].get<float>(),
+                    rot[2].get<float>()
+                };
+            }
+
+            if (obj.contains("color"))
+            {
+                auto color = obj["color"];
+
+                data.color =
+                {
+                    color[0].get<float>(),
+                    color[1].get<float>(),
+                    color[2].get<float>()
+                };
+            }
+
+            stage.objects.push_back(data);
+        }
     }
 
     return stage;

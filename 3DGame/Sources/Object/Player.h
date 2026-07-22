@@ -76,7 +76,7 @@ private:
 
     static constexpr float HOOK_RELEASE_POWER = 10.0f;
 
-    static constexpr float EYE_HEIGHT = 0.0f;
+    static constexpr float EYE_HEIGHT = 1.0f;
 
     static constexpr float HOOK_OFFSET_RIGHT = 0.35f;
     static constexpr float HOOK_OFFSET_DOWN = 0.25f;
