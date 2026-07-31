@@ -36,7 +36,6 @@ public:
 
 private:
     void CreateCamera();
-    // ステージロード機能実装後移動予定
     void CreateObjects();
     void CreateObjectManager();
     void CreateColliderManager();

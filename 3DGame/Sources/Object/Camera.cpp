@@ -10,6 +10,14 @@ void Camera::Update(float deltaTime)
 
 Matrix Camera::GetView() const
 {
+    if (m_isFixed)
+    {
+        return Matrix::CreateLookAt(
+            m_position,
+            m_target,
+            Vector3::Up);
+    }
+
     if (!m_player)
     {
         return Matrix::Identity;
@@ -21,8 +29,7 @@ Matrix Camera::GetView() const
     return Matrix::CreateLookAt(
         position,
         target,
-        Vector3::Up
-    );
+        Vector3::Up);
 }
 
 Matrix Camera::GetProjection() const
@@ -38,9 +45,20 @@ Matrix Camera::GetProjection() const
 void Camera::SetPlayer(const Player* player)
 {
     m_player = player;
+    m_isFixed = false;
 }
 
 void Camera::SetAspectRatio(float aspectRatio)
 {
     m_aspectRatio = aspectRatio;
+}
+
+void Camera::SetFixedCamera(
+    const Vector3& position,
+    const Vector3& target)
+{
+    m_isFixed = true;
+
+    m_position = position;
+    m_target = target;
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Sources/StageData/StageData.h"
 #include <Sources/Object/ObjectManager.h>
 

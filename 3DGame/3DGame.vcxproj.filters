@@ -35,6 +35,12 @@
     <Filter Include="Resources\Stages">
       <UniqueIdentifier>{8a25f5d5-219b-4019-a41a-917d3d9b858a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{ceaa0196-99c3-4435-863f-b5114ad57551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Fonts">
+      <UniqueIdentifier>{b86331b3-c881-495d-8c92-4b26fa0ccc56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -187,6 +193,9 @@
     <Image Include="directx.ico">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Resources\Textures\TitleLogo.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest">
@@ -197,6 +206,9 @@
     <None Include="packages.config" />
     <None Include="Resources\Stages\Stage1.json">
       <Filter>Resources\Stages</Filter>
+    </None>
+    <None Include="Resources\Fonts\SegoeUI_18.spritefont">
+      <Filter>Resources\Fonts</Filter>
     </None>
   </ItemGroup>
 </Project>

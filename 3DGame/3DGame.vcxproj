@@ -246,12 +246,14 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico" />
+    <Image Include="Resources\Textures\TitleLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Fonts\SegoeUI_18.spritefont" />
     <None Include="Resources\Stages\Stage1.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

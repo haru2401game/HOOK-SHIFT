@@ -13,10 +13,20 @@ public:
     void SetPlayer(const Player* player);
     void SetAspectRatio(float aspectRatio);
 
+    void SetFixedCamera(
+        const DirectX::SimpleMath::Vector3& position,
+        const DirectX::SimpleMath::Vector3& target);
+
 private:
     const Player* m_player = nullptr;
 
     float m_aspectRatio = 16.0f / 9.0f;
+
+    // 固定カメラ用
+    bool m_isFixed = false;
+
+    DirectX::SimpleMath::Vector3 m_position = { 0,0,0 };
+    DirectX::SimpleMath::Vector3 m_target = { 0,0,1 };
 
 private:
     // カメラ設定
