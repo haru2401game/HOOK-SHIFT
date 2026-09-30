@@ -3,6 +3,8 @@
 #include "Sources/Scene/TitleScene.h"
 #include "Sources/Scene/GameScene.h"
 
+#include <Windows.h>
+
 void SceneManager::Initialize()
 {
     ChangeScene(std::make_unique<TitleScene>()); // タイトルシーンに設定
@@ -14,6 +16,13 @@ void SceneManager::Finalize()
 
 void SceneManager::Update(float deltaTime)
 {
+    // Escキーでゲームを終了
+    if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+    {
+        PostQuitMessage(0);
+        return;
+    }
+
     if (!m_currentScene)
     {
         return;
@@ -48,7 +57,7 @@ void SceneManager::ChangeScene(std::unique_ptr<Scene> newScene)
     // シーンの遷移
     m_currentScene = std::move(newScene);
 
-	// 変更後のシーン初期化処理
+    // 変更後のシーン初期化処理
     if (m_currentScene)
     {
         m_currentScene->SetDeviceResources(m_deviceResources);
